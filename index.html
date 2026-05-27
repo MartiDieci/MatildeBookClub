@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Club del Libro - Valutazione</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      margin: 0;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 40px;
+      width: 100%;
+      max-width: 500px;
+    }
+    
+    h1 {
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.8rem;
+    }
+    
+    h1 span {
+      display: block;
+      font-size: 0.9rem;
+      color: #888;
+      font-weight: normal;
+      margin-top: 5px;
+    }
+    
+    .form-group {
+      margin-bottom: 24px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 600;
+    }
+    
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+    }
+    
+    textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    
+    /* Rating stars */
+    .rating {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      gap: 5px;
+    }
+    
+    .rating input {
+      display: none;
+    }
+    
+    .rating label {
+      cursor: pointer;
+      font-size: 2.5rem;
+      color: #ddd;
+      transition: color 0.2s;
+      margin: 0;
+    }
+    
+    .rating label:hover,
+    .rating label:hover ~ label,
+    .rating input:checked ~ label {
+      color: #ffc107;
+    }
+    
+    .rating-text {
+      text-align: center;
+      margin-top: 8px;
+      color: #888;
+      font-size: 0.9rem;
+      min-height: 24px;
+    }
+    
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .success-message {
+      display: none;
+      text-align: center;
+      padding: 20px;
+      background: #d4edda;
+      border-radius: 8px;
+      color: #155724;
+      margin-top: 20px;
+    }
+    
+    .reviews {
+      margin-top: 30px;
+      border-top: 2px solid #eee;
+      padding-top: 20px;
+    }
+    
+    .reviews h2 {
+      color: #333;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+    }
+    
+    .review-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 12px;
+    }
+    
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .review-name {
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .review-stars {
+      color: #ffc107;
+    }
+    
+    .review-comment {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    
+    .no-reviews {
+      color: #888;
+      text-align: center;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📚 Club del Libro <span>Condividi la tua opinione</span></h1>
+    
+    <form id="reviewForm">
+      <div class="form-group">
+        <label for="name">Il tuo nome</label>
+        <input type="text" id="name" name="name" placeholder="Es. Mario Rossi" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="book">Titolo del libro</label>
+        <input type="text" id="book" name="book" placeholder="Es. Il nome della rosa" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Punteggio</label>
+        <div class="rating">
+          <input type="radio" id="star5" name="rating" value="5" required>
+          <label for="star5" title="5 stelle">★</label>
+          <input type="radio" id="star4" name="rating" value="4">
+          <label for="star4" title="4 stelle">★</label>
+          <input type="radio" id="star3" name="rating" value="3">
+          <label for="star3" title="3 stelle">★</label>
+          <input type="radio" id="star2" name="rating" value="2">
+          <label for="star2" title="2 stelle">★</label>
+          <input type="radio" id="star1" name="rating" value="1">
+          <label for="star1" title="1 stella">★</label>
+        </div>
+        <div class="rating-text" id="ratingText"></div>
+      </div>
+      
+      <div class="form-group">
+        <label for="comment">Il tuo commento</label>
+        <textarea id="comment" name="comment" placeholder="Cosa ne pensi del libro? Consiglieresti la lettura?" required></textarea>
+      </div>
+      
+      <button type="submit">Invia Recensione</button>
+    </form>
+    
+    <div class="success-message" id="successMessage">
+      ✅ Grazie! La tua recensione è stata salvata.
+    </div>
+    
+    <div class="reviews">
+      <h2>Recensioni del gruppo</h2>
+      <div id="reviewsList">
+        <p class="no-reviews">Nessuna recensione ancora. Sii il primo!</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ratingLabels = {
+      1: 'Pessimo 😞',
+      2: 'Così così 😐',
+      3: 'Discreto 🙂',
+      4: 'Molto bello 😊',
+      5: 'Capolavoro! 🤩'
+    };
+    
+    // Carica recensioni salvate
+    let reviews = JSON.parse(localStorage.getItem('bookClubReviews')) || [];
+    
+    // Mostra testo descrittivo per il rating
+    document.querySelectorAll('.rating input').forEach(input => {
+      input.addEventListener('change', function() {
+        document.getElementById('ratingText').textContent = ratingLabels[this.value];
+      });
+    });
+    
+    // Gestione invio form
+    document.getElementById('reviewForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const review = {
+        name: document.getElementById('name').value,
+        book: document.getElementById('book').value,
+        rating: document.querySelector('input[name="rating"]:checked').value,
+        comment: document.getElementById('comment').value,
+        date: new Date().toLocaleDateString('it-IT')
+      };
+      
+      reviews.unshift(review);
+      localStorage.setItem('bookClubReviews', JSON.stringify(reviews));
+      
+      // Mostra messaggio successo
+      document.getElementById('successMessage').style.display = 'block';
+      
+      // Reset form
+      this.reset();
+      document.getElementById('ratingText').textContent = '';
+      
+      // Nascondi messaggio dopo 3 secondi
+      setTimeout(() => {
+        document.getElementById('successMessage').style.display = 'none';
+      }, 3000);
+      
+      renderReviews();
+    });
+    
+    function renderReviews() {
+      const container = document.getElementById('reviewsList');
+      
+      if (reviews.length === 0) {
+        container.innerHTML = '<p class="no-reviews">Nessuna recensione ancora. Sii il primo!</p>';
+        return;
+      }
+      
+      container.innerHTML = reviews.map(r => `
+        <div class="review-card">
+          <div class="review-header">
+            <span class="review-name">${escapeHtml(r.name)} – <em>${escapeHtml(r.book)}</em></span>
+            <span class="review-stars">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span>
+          </div>
+          <p class="review-comment">${escapeHtml(r.comment)}</p>
+        </div>
+      `).join('');
+    }
+    
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+    
+    // Render iniziale
+    renderReviews();
+  </script>
+</body>
+</html>
